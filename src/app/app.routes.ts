@@ -1,10 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { AuctionComponent } from './components/auction/auction.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'auction/:id', component: AuctionComponent},
+  {path: '**', redirectTo: ''}
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  declarations: [HomeComponent, AuctionComponent],
+  imports: [RouterModule.forRoot(routes),
+  RouterModule],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

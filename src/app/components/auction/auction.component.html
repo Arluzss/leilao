@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="top-side">
+        <div id="infoTags">
+            <p style="color: #C9D971;">Carro em Leilão</p>
+            <div id="arrows">
+                <p>category</p>
+            </div>
+        </div>
+        <div id="grayBar"></div>
+        <div id="grayInside">
+            <div id="carLogo"></div>
+            <p> {{ car?.nome }} </p>
+        </div>
+    </div>
+    <div id="car">
+        <img src="{{ car?.imagem }}" alt="" srcset="">
+    </div>
+    <div class="bottom-side">
+        <div id="auction-sec" class="bottom-side-sec">
+            <p>Lance atual</p>
+            <p>R$ {{ car?.preco }} </p>
+        </div>
+        <div id="status" class="bottom-side-sec">
+            <div>
+                <p>Tempo Restante</p>
+                    <div id="bar">
+                        <div id="circle"></div>
+                    </div>
+            </div>
+            <div id="baragada">
+                <a (click)="send(1)">R$ 14.000,00</a>
+                <a (click)="send(2)">R$ 14.000,00</a>
+                <a (click)="send(3)">R$ 14.000,00</a>
+                <a (click)="send(4)">R$ 14.000,00</a>
+            </div>
+        </div>
+    </div>
+</div>  

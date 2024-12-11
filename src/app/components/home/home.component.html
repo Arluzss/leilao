@@ -1,20 +1,19 @@
-<div class="container" (click)="teste()">
+<div class="container" (click)="play()">
     <div class="top-side">
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <div id="arrowLeft">
-                </div>
-                <p>Popular</p>
-                <div id="arrowRight"></div>
+                <div id="arrowLeft" (click)="pass(true)"></div>
+                <p>{{ category }}</p>
+                <div id="arrowRight" (click)="pass(false)"></div>
             </div>
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
-            <div id="arrowLeft"></div>
+            <div id="arrowLeft" (click)="carPass(true)"></div>
             <div id="carLogo"></div>
-            <p>GOLF COMFORTLINE</p>
-            <div id="arrowRight"></div>
+            <p>{{ carName }}</p>
+            <div id="arrowRight" (click)="carPass(false)"></div>
         </div>
     </div>
     <div id="car">
@@ -72,8 +71,8 @@
         </div>
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p>R$ 14.000,00</p>
-            <a href="#">Entrar</a>
+            <p>R$ {{ price }}</p>
+            <a [routerLink]="['/auction', carId]">Entrar</a>
         </div>
     </div>
 </div>

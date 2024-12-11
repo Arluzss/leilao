@@ -1,0 +1,52 @@
+{
+    "categorias": [
+        {
+            "popular": [
+                {
+                    "id": 1,
+                    "nome": "GOLF CONFORTLINE",
+                    "marca": "Volkswawgen",
+                    "preco": 50000,
+                    "imagem": "gol.jpg"
+                },
+                {
+                    "id": 2,
+                    "nome": "Onix",
+                    "marca": "Chevrolet",
+                    "preco": 60000,
+                    "imagem": "onix.jpg"
+                },
+                {
+                    "id": 3,
+                    "nome": "HB20",
+                    "marca": "Hyundai",
+                    "preco": 55000,
+                    "imagem": "hb20.jpg"
+                }
+            ],
+            "luxo": [
+                {
+                    "id": 4,
+                    "nome": "Civic",
+                    "marca": "Honda",
+                    "preco": 100000,
+                    "imagem": "civic.jpg"
+                },
+                {
+                    "id": 5,
+                    "nome": "Corolla",
+                    "marca": "Toyota",
+                    "preco": 110000,
+                    "imagem": "corolla.jpg"
+                },
+                {
+                    "id": 6,
+                    "nome": "Cruze",
+                    "marca": "Chevrolet",
+                    "preco": 105000,
+                    "imagem": "cruze.jpg"
+                }
+            ]
+        }
+    ]
+}
