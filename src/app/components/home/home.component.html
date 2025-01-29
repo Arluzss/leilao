@@ -3,17 +3,17 @@
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <div id="arrowLeft" (click)="pass(true)"></div>
-                <p>{{ category }}</p>
-                <div id="arrowRight" (click)="pass(false)"></div>
+                <div id="arrowLeft"></div>
+                <p>categorias</p>
+                <div id="arrowRight"></div>
             </div>
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
-            <div id="arrowLeft" (click)="carPass(true)"></div>
+            <div id="arrowLeft"></div>
             <div id="carLogo"></div>
-            <p>{{ carName }}</p>
-            <div id="arrowRight" (click)="carPass(false)"></div>
+            <p *ngIf="currentCar">{{ currentCar.name }}</p>
+            <div id="arrowRight"></div>
         </div>
     </div>
     <div id="car">
@@ -21,7 +21,8 @@
     </div>
     <div class="bottom-side">
         <div id="info">
-            <p>Motorização: Motor 1.5 Flex<br>
+            <p>Ano: {{ currentCar.year }}<br>
+                Motorização: {{ currentCar.engine }}<br>
                 Tipo de Câmbio: Manual<br>
                 Quilometragem: 60.000 km<br>
                 Combustível: Gasolina
@@ -71,8 +72,8 @@
         </div>
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p>R$ {{ price }}</p>
-            <a [routerLink]="['/auction', carId]">Entrar</a>
+            <p *ngIf="currentCar">R$ {{ currentCar.currentPrice }}</p>
+            <a [routerLink]="['/auction', currentCar._id]">Entrar</a>
         </div>
     </div>
 </div>

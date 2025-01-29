@@ -18,7 +18,7 @@
     <div class="bottom-side">
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p>R$ {{ car?.preco }} </p>
+            <p>R$ {{ prices[0] }} </p>
         </div>
         <div id="status" class="bottom-side-sec">
             <div>
@@ -28,10 +28,10 @@
                     </div>
             </div>
             <div id="baragada">
-                <a (click)="send(1)">R$ 14.000,00</a>
-                <a (click)="send(2)">R$ 14.000,00</a>
-                <a (click)="send(3)">R$ 14.000,00</a>
-                <a (click)="send(4)">R$ 14.000,00</a>
+                <a (click)="send(1)">R$ {{ prices[1] }}</a>
+                <a (click)="send(2)">R$ {{ prices[2] }}</a>
+                <a (click)="send(3)">R$ {{ prices[3] }}</a>
+                <a (click)="send(4)">R$ {{ prices[4] }}</a>
             </div>
         </div>
     </div>

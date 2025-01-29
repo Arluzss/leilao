@@ -37,22 +37,24 @@ const ws_1 = require("ws");
 const fs = __importStar(require("fs"));
 const wss = new ws_1.WebSocketServer({ port: 8080 });
 let percent = { '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40 };
+let session = [];
 wss.on('connection', (ws, req) => {
-    console.log('New client connected');
     ws.on('message', (message) => {
-        console.log(`Received message => ${message}`);
-        let car = changePrice(Number(JSON.parse(message).id), JSON.parse(message).value);
+        let car = changeCarPrice(Number(JSON.parse(message).auctionID), JSON.parse(message).value);
         ws.send(JSON.stringify(car));
-    });
-    ws.on('close', () => {
-        console.log('Client has disconnected');
     });
     if (req.url === undefined) {
         return;
     }
     const url = new URL(req.url, `http://${req.headers.host}`);
     const query = new URLSearchParams(url.search);
-    ws.send(JSON.stringify(findCarById(Number(query.get('id')))));
+    if (!session.some(s => s.auctionID === query.get('auctionID') && s.userID === query.get('userID'))) {
+        session.push({ auctionID: query.get('auctionID'), userID: query.get('userID'), client: ws });
+    }
+    session.forEach(s => {
+        console.log(`Auction ID: ${s.auctionID}, User ID: ${s.userID}`);
+    });
+    ws.send(JSON.stringify(findCarById(Number(query.get('auctionID')))));
 });
 console.log('WebSocket server is running on ws://localhost:8080');
 const rawData = fs.readFileSync('src/Cars.json', 'utf-8');
@@ -66,7 +68,7 @@ function findCarById(id) {
     }
     return undefined;
 }
-function changePrice(id, value) {
+function changeCarPrice(id, value) {
     const car = findCarById(id);
     if (car) {
         car.preco += car.preco * percent[value];

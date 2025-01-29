@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 export class AuctionComponent implements OnInit, OnDestroy {
   private socket: WebSocket | undefined;
   private auctionId: string | null = null;
+  private userID: string | null = null;
+  prices: number[] = [];
   car: Car | undefined;
 
   constructor(private route: ActivatedRoute) { }
@@ -28,7 +30,8 @@ export class AuctionComponent implements OnInit, OnDestroy {
     let params;
     if (this.auctionId) {
       params = new URLSearchParams();
-      params.set('id', this.auctionId);
+      params.set('auctionID', this.auctionId);
+      params.set('userID', 'da3Esdse344t');
     }
 
     this.socket = new WebSocket(`ws://localhost:8080?${params}`);
@@ -39,8 +42,10 @@ export class AuctionComponent implements OnInit, OnDestroy {
 
     this.socket.onmessage = (event) => {
       this.car = JSON.parse(event.data);
-      console.log('Received:', this.car);
-      // console.log('Received:', event.data);
+      if (this.car) {
+        this.prices = this.car.preco;
+      }
+      console.log('WebSocket message received:', this.car);
     };
 
     this.socket.onerror = (event) => {
@@ -61,7 +66,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
   send(p: number) {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify({
-        id: this.auctionId,
+        auctionID: this.auctionId,
         value: p.toString()
       }));
     } else {
@@ -74,6 +79,6 @@ interface Car {
   id: number;
   nome: string;
   marca: string;
-  preco: number;
+  preco: number[];
   imagem: string;
 }
