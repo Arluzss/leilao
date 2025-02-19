@@ -1,8 +1,9 @@
 export interface Car {
-    _id: string;
-    name: string;
+    id: string;
+    nome: string;
     brand: string;
     year: number;
+    preco: number;
     engine: string;
     status?: string; // Opcional porque tem um valor padrão
     startingPrice: number;

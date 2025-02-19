@@ -16,6 +16,7 @@ router.post("/", async (req, res) => {
 
 // Rota para listar todos os carros
 router.get("/", async (req, res) => {
+  console.log("GET /cars");
   try {
     const cars = await Car.find();
     res.json(cars);
@@ -52,6 +53,28 @@ router.delete("/:id", async (req: any, res: any) => {
     res.json({ message: "Carro deletado com sucesso" });
   } catch (err) {
     res.status(500).json({ error: "Erro ao deletar o carro", details: err });
+  }
+});
+
+// Rota para buscar carros por categoria
+router.get("/:category", async (req: any, res: any) => {
+  try {
+    const { category } = req.params;
+    
+    const carCollection = await Car.findOne({});
+    if (!carCollection) {
+      return res.status(404).json({ message: "Nenhuma coleção encontrada." });
+    }
+
+    const categoriaEncontrada = carCollection.categorias.find((cat: Record<string, any>) => cat[category]);
+    
+    if (!categoriaEncontrada) {
+      return res.status(404).json({ message: "Categoria não encontrada." });
+    }
+
+    res.json(categoriaEncontrada[category as keyof typeof categoriaEncontrada]);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar os carros." });
   }
 });
 

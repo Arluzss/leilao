@@ -30,8 +30,9 @@ export class AuctionComponent implements OnInit, OnDestroy {
     let params;
     if (this.auctionId) {
       params = new URLSearchParams();
-      params.set('auctionID', this.auctionId);
       params.set('userID', 'da3Esdse344t');
+      params.set('category', 'popular');
+      params.set('auctionID', this.auctionId);
     }
 
     this.socket = new WebSocket(`ws://localhost:8080?${params}`);
@@ -43,7 +44,7 @@ export class AuctionComponent implements OnInit, OnDestroy {
     this.socket.onmessage = (event) => {
       this.car = JSON.parse(event.data);
       if (this.car) {
-        this.prices = this.car.preco;
+        this.prices[0] = this.car.preco;
       }
       console.log('WebSocket message received:', this.car);
     };
@@ -79,6 +80,6 @@ interface Car {
   id: number;
   nome: string;
   marca: string;
-  preco: number[];
+  preco: number;
   imagem: string;
 }

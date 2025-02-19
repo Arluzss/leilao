@@ -1,27 +1,35 @@
 import { Schema, model } from "mongoose";
 
-const CarSchema = new Schema({
-  name: { type: String, required: true },
-  brand: { type: String, required: true },
-  year: { type: Number, required: true },
-  engine: { type: String, required: true },
-  status: { type: String, default: "Disponível" },
-  startingPrice: { type: Number, required: true },
-  currentPrice: { type: Number, required: true },
-  bids: [
-    {
-      user: { type: String },
-      bidAmount: { type: Number },
-      timestamp: { type: Date, default: Date.now }
-    }
-  ],
-  comments: [
-    {
-      user: { type: String },
-      text: { type: String },
-      timestamp: { type: Date, default: Date.now }
-    }
-  ]
+const BidSchema = new Schema({
+  user: { type: String, required: true },
+  bidAmount: { type: Number, required: true },
+  timestamp: { type: Date, default: Date.now }
 });
 
-export default model("Car", CarSchema);
+const CommentSchema = new Schema({
+  user: { type: String, required: true },
+  text: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now }
+});
+
+const CarSchema = new Schema({
+  id: { type: Number, required: true },
+  nome: { type: String, required: true },
+  marca: { type: String, required: true },
+  preco: { type: Number, required: true },
+  imagem: { type: String, required: true },
+  bids: [BidSchema],
+  comments: [CommentSchema]
+});
+
+const CategoriaSchema = new Schema({
+  popular: [CarSchema],
+  luxo: [CarSchema]
+});
+
+const CarCollectionSchema = new Schema({
+  categorias: [CategoriaSchema]
+});
+
+export default model("CarCollection", CarCollectionSchema);
+

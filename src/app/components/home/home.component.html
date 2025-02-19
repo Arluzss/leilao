@@ -3,17 +3,17 @@
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <div id="arrowLeft"></div>
-                <p>categorias</p>
-                <div id="arrowRight"></div>
+                <div id="arrowLeft" (click)="changeCategory(-1)"></div>
+                <p>{{currentCategory}}</p>
+                <div id="arrowRight" (click)="changeCategory(1)"></div>
             </div>
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
-            <div id="arrowLeft"></div>
+            <div id="arrowLeft" (click)="changeCar(-1)"></div>
             <div id="carLogo"></div>
-            <p *ngIf="currentCar">{{ currentCar.name }}</p>
-            <div id="arrowRight"></div>
+            <p>{{ currentCar.nome }}</p>
+            <div id="arrowRight" (click)="changeCar(1)"></div>
         </div>
     </div>
     <div id="car">
@@ -72,8 +72,8 @@
         </div>
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p *ngIf="currentCar">R$ {{ currentCar.currentPrice }}</p>
-            <a [routerLink]="['/auction', currentCar._id]">Entrar</a>
+            <p *ngIf="currentCar">R$ {{ currentCar.preco }}</p>
+            <a [routerLink]="['/auction', currentCar.id]">Entrar</a>
         </div>
     </div>
 </div>

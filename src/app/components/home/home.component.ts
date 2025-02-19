@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import cars from './cars.json';
 import { Car } from '../interface/CarInterface'
 
 @Component({
@@ -12,73 +11,53 @@ import { Car } from '../interface/CarInterface'
 export class HomeComponent {
   audio = new Audio('assets/audio/RidersOnTheStorm.mp3');
   imagePath = 'assets/image/Exposição.png';
-  index: number = 0;
-
-  categoryArr: string[] = ['popular', 'luxo'];
+  index1: number = 0;
+  index2: number = 0;
+  categorys: string[] = ['popular', 'luxo'];
+  currentCategory: string = 'popular';
   currentCar: Car = {} as Car;
   cars: Car[] = [];
+  percent: { [key: number]: number } = { 1: 0.10, 2: 0.20, 3: 0.30, 4: 0.40 };
 
   play(): void {
     this.audio.play();
   }
 
-  ngOnInit(): void {
-    fetch('http://localhost:3000/cars')
+  changeCategory(n:number){
+    this.index1 += n;
+    if(this.categorys[this.index1]){
+      this.currentCategory = this.categorys[this.index1];
+    }else{
+      this.index1 = 0;
+      this.currentCategory = this.categorys[this.index1];
+    }
+    this.fetchCars();
+  }
+
+  changeCar(n: number): void {
+    this.index2 += n;
+    if (this.cars[this.index2]) {
+      this.currentCar = this.cars[this.index2];
+    }else{
+      this.index2 = 0;
+      this.currentCar = this.cars[this.index2];
+    }
+  }
+
+  fetchCars(): void {
+    fetch(`http://localhost:3000/cars/${this.currentCategory}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Erro na requisição');
         }
         return response.json();
       }).then(data => {
-        console.log(data);
         this.cars = data;
-        this.currentCar = this.cars[0];
+        this.currentCar = data[this.index2];
       })
   }
 
-  // pass(p: boolean): void {
-  //   let tempCategory: string = this.category;
-
-  //   if (p) {
-  //     this.category = this.categoryArr[this.categoryArr.indexOf(this.category) - 1];
-  //   } else {
-  //     this.category = this.categoryArr[this.categoryArr.indexOf(this.category) + 1];
-  //   }
-
-  //   if (this.category == undefined) {
-  //     this.category = tempCategory;
-  //   }
-
-  //   this.index = 0;
-  //   this.update(0);
-  // }
-
-  // carPass(p: boolean): void {
-  //   cars.categorias.forEach((element: any) => {
-  //     if (element[this.category] != undefined) {
-  //       if (p) {
-  //         this.index -= 1;
-  //       } else {
-  //         this.index += 1;
-  //       }
-  //       this.update(this.index);
-  //     }
-  //   });
-  // }
-
-  // update(n: number): void {
-  //   cars.categorias.forEach((element: any) => {
-  //     if (n < 0 || n >= element[this.category].length) {
-  //       n = 0;
-  //       this.index = 0;
-  //     }
-  //     if (element[this.category] != undefined) {
-  //       this.carId = element[this.category][n].id;
-  //       this.carName = element[this.category][n].nome;
-  //       this.price = element[this.category][n].preco;
-  //       this.carImage = element[this.category][n].imagem;
-  //       this.carLogo = element[this.category][n].marca;
-  //     }
-  //   });
-  // }
+  ngOnInit(): void {
+    this.fetchCars();
+  }
 }

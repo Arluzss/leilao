@@ -36,34 +36,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
 const fs = __importStar(require("fs"));
 const wss = new ws_1.WebSocketServer({ port: 8080 });
-let percent = { '1': 0.10, '2': 0.20, '3': 0.30, '4': 0.40 };
+let percent = { 1: 0.10, 2: 0.20, 3: 0.30, 4: 0.40 };
 let session = [];
 wss.on('connection', (ws, req) => {
     ws.on('message', (message) => {
         let car = changeCarPrice(Number(JSON.parse(message).auctionID), JSON.parse(message).value);
         ws.send(JSON.stringify(car));
+        console.log(message);
     });
     if (req.url === undefined) {
         return;
     }
     const url = new URL(req.url, `http://${req.headers.host}`);
     const query = new URLSearchParams(url.search);
-    if (!session.some(s => s.auctionID === query.get('auctionID') && s.userID === query.get('userID'))) {
-        session.push({ auctionID: query.get('auctionID'), userID: query.get('userID'), client: ws });
+    if (!session.some(s => s.auctionID === query.get('auctionID') && s.userID === query.get('userID') && s.category === query.get('category'))) {
+        session.push({ auctionID: query.get('auctionID'), userID: query.get('userID'), category: query.get('category'), client: ws });
     }
     session.forEach(s => {
-        console.log(`Auction ID: ${s.auctionID}, User ID: ${s.userID}`);
+        console.log(`Auction ID: ${s.auctionID}, category: ${s.category} User ID: ${s.userID}`);
     });
     ws.send(JSON.stringify(findCarById(Number(query.get('auctionID')))));
 });
 console.log('WebSocket server is running on ws://localhost:8080');
 const rawData = fs.readFileSync('src/Cars.json', 'utf-8');
-const carData = JSON.parse(rawData);
+const carData = JSON.parse(rawData); // Corrigindo a tipagem
+// Função para listar categorias corretamente
 function findCarById(id) {
-    for (const categoria of carData.categorias) {
-        const car = categoria.popular.find(car => car.id === id) || categoria.luxo.find(car => car.id === id);
-        if (car) {
-            return car;
+    for (const categoria of carData[0].categorias) {
+        for (const car of categoria.popular) {
+            if (car.id === id) {
+                return car;
+            }
+        }
+        for (const car of categoria.luxo) {
+            if (car.id === id) {
+                return car;
+            }
         }
     }
     return undefined;
