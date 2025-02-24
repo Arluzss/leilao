@@ -16,5 +16,3 @@ Bem-vindo ao **NitroAuction**, o leilão de carros definitivo inspirado na adren
 ✅ Cadastro de veículos com fotos e detalhes técnicos 📷
 ✅ Histórico de lances para acompanhar suas apostas 📜
 ✅ Painel administrativo para gerenciamento de leilões e usuários 🛠️
-
-Agora é só acessar **http://localhost:4200** e começar a dar seus lances! 💰
