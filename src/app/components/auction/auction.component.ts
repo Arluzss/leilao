@@ -12,13 +12,17 @@ export class AuctionComponent implements OnInit, OnDestroy {
   private socket: WebSocket | undefined;
   private auctionId: string | null = null;
   private userID: string | null = null;
-  prices: number[] = [];
-  car: Car | undefined;
+  public category: string | null = null;
+  public currentPrice: number = 0;
+  public time = 0;
+  prices: number[] = [0, 0, 0, 0];
+  car: Car | undefined = undefined;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.auctionId = this.route.snapshot.paramMap.get('id');
+    this.category = this.route.snapshot.paramMap.get('category');
     this.connectWebSocket();
   }
 
@@ -43,10 +47,13 @@ export class AuctionComponent implements OnInit, OnDestroy {
 
     this.socket.onmessage = (event) => {
       this.car = JSON.parse(event.data);
+
       if (this.car) {
-        this.prices[0] = this.car.preco;
+        this.currentPrice = this.car.preco;
+        this.updatePrices(this.car);
+        this.time = this.car.time;
+        console.log('WebSocket message received:', this.car);
       }
-      console.log('WebSocket message received:', this.car);
     };
 
     this.socket.onerror = (event) => {
@@ -74,12 +81,27 @@ export class AuctionComponent implements OnInit, OnDestroy {
       console.error('WebSocket is not open. Ready state:', this.socket ? this.socket.readyState : 'undefined');
     }
   }
+
+  updatePrices(car: Car) {
+    if (car) {
+      for(let i = 0; i < this.prices.length; i++){
+        this.prices[i] = car.preco + 500;
+      }
+    }
+  }
 }
 
 interface Car {
-  id: number;
-  nome: string;
-  marca: string;
-  preco: number;
-  imagem: string;
+  id: string;
+      nome: string;
+      brand: string;
+      year: number;
+      preco: number;
+      engine: string;
+      status?: string; // Opcional porque tem um valor padrão
+      startingPrice: number;
+      currentPrice: number;
+      time: number;
+      // bids?: Bid[]; // Lista de lances
+      // comments?: Comment[]; // Lista de comentários
 }

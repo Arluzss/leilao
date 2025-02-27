@@ -73,7 +73,7 @@
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
             <p *ngIf="currentCar">R$ {{ currentCar.preco }}</p>
-            <a [routerLink]="['/auction', currentCar.id]">Entrar</a>
+            <a [routerLink]="['/auction', currentCategory, currentCar.id]" (click)="closeConnection()">Entrar</a>
         </div>
     </div>
 </div>

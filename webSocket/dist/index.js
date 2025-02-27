@@ -32,30 +32,63 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
 const fs = __importStar(require("fs"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const wss = new ws_1.WebSocketServer({ port: 8080 });
-let percent = { 1: 0.10, 2: 0.20, 3: 0.30, 4: 0.40 };
+let percent = { 1: 500, 2: 1000, 3: 1500, 4: 2000 };
+let time = 0;
 let session = [];
+let tempSession = [];
+dotenv_1.default.config();
+mongoose_1.default
+    .connect(process.env.MONGO_URI || "")
+    .then(() => {
+    console.log("Conectado ao MongoDB");
+})
+    .catch((err) => console.error("Erro ao conectar ao MongoDB", err));
 wss.on('connection', (ws, req) => {
     ws.on('message', (message) => {
-        let car = changeCarPrice(Number(JSON.parse(message).auctionID), JSON.parse(message).value);
+        let car = changeCarPrice(JSON.parse(message).auctionID, JSON.parse(message).value);
         ws.send(JSON.stringify(car));
-        console.log(message);
     });
     if (req.url === undefined) {
         return;
     }
     const url = new URL(req.url, `http://${req.headers.host}`);
     const query = new URLSearchParams(url.search);
-    if (!session.some(s => s.auctionID === query.get('auctionID') && s.userID === query.get('userID') && s.category === query.get('category'))) {
-        session.push({ auctionID: query.get('auctionID'), userID: query.get('userID'), category: query.get('category'), client: ws });
+    const userID = query.get('userID');
+    const auctionID = query.get('auctionID');
+    const category = query.get('category');
+    if (userID && userID.length > 0) {
+        // Remover a primeira ocorrência do cliente com um auctionID diferente
+        const existingSessionIndex = session.findIndex(s => s.client === ws && s.auctionID !== auctionID);
+        if (existingSessionIndex !== -1) {
+            session.splice(existingSessionIndex, 1);
+        }
+        if (!session.some(s => s.auctionID === auctionID && s.userID === userID && s.category === category)) {
+            session.push({ auctionID, userID, category, client: ws });
+        }
     }
-    session.forEach(s => {
-        console.log(`Auction ID: ${s.auctionID}, category: ${s.category} User ID: ${s.userID}`);
+    else {
+        // Remover a primeira ocorrência do cliente com um auctionID diferente
+        const existingTempSessionIndex = tempSession.findIndex(s => s.client === ws && s.auctionID !== auctionID);
+        if (existingTempSessionIndex !== -1) {
+            tempSession.splice(existingTempSessionIndex, 1);
+        }
+        tempSession.push({ auctionID, userID: '', category, client: ws });
+    }
+    ws.on('close', () => {
+        // Remover o cliente da sessão quando ele se desconectar
+        session = session.filter(s => s.client !== ws);
+        tempSession = tempSession.filter(s => s.client !== ws);
+        console.log('WebSocket connection closed');
     });
-    ws.send(JSON.stringify(findCarById(Number(query.get('auctionID')))));
 });
 console.log('WebSocket server is running on ws://localhost:8080');
 const rawData = fs.readFileSync('src/Cars.json', 'utf-8');
@@ -64,24 +97,48 @@ const carData = JSON.parse(rawData); // Corrigindo a tipagem
 function findCarById(id) {
     for (const categoria of carData[0].categorias) {
         for (const car of categoria.popular) {
-            if (car.id === id) {
+            if (car.id == id) {
                 return car;
             }
         }
         for (const car of categoria.luxo) {
-            if (car.id === id) {
+            if (car.id == id) {
                 return car;
             }
         }
     }
+    console.log(`Car with ID ${id} not found`);
     return undefined;
 }
 function changeCarPrice(id, value) {
+    //aqui ao mudar o preço, atualizar no banco de dados e adicionar ao array bid
     const car = findCarById(id);
     if (car) {
-        car.preco += car.preco * percent[value];
-        console.log(`Price of ${car.nome} changed to ${car.preco}`);
+        car.preco += percent[value];
         return car;
     }
     return undefined;
 }
+function updateTime() {
+    time++;
+    let car;
+    session.forEach(s => {
+        if (s.auctionID === null)
+            return;
+        car = findCarById(s.auctionID);
+        if (car) {
+            car.time = time;
+            s.client.send(JSON.stringify(car));
+        }
+    });
+    tempSession.forEach(s => {
+        if (s.auctionID === null)
+            return;
+        car = findCarById(s.auctionID);
+        if (car) {
+            car.time = time;
+            s.client.send(JSON.stringify(car));
+        }
+    });
+}
+setInterval(updateTime, 1000);

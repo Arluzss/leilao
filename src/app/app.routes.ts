@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'auction/:id', component: AuctionComponent},
+  {path: 'auction/:category/:id', component: AuctionComponent},
   {path: '**', redirectTo: ''}
 ];
 

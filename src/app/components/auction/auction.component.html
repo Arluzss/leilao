@@ -3,7 +3,7 @@
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <p>category</p>
+                <p>{{ category }}</p>
             </div>
         </div>
         <div id="grayBar"></div>
@@ -13,25 +13,26 @@
         </div>
     </div>
     <div id="car">
-        <img src="{{ car?.imagem }}" alt="" srcset="">
+        <img src="" alt="" srcset="">
     </div>
     <div class="bottom-side">
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p>R$ {{ prices[0] }} </p>
+            <p>R$ {{ currentPrice }} </p>
         </div>
         <div id="status" class="bottom-side-sec">
             <div>
                 <p>Tempo Restante</p>
+                <p>{{ time }}</p>
                     <div id="bar">
                         <div id="circle"></div>
                     </div>
             </div>
             <div id="baragada">
-                <a (click)="send(1)">R$ {{ prices[1] }}</a>
-                <a (click)="send(2)">R$ {{ prices[2] }}</a>
-                <a (click)="send(3)">R$ {{ prices[3] }}</a>
-                <a (click)="send(4)">R$ {{ prices[4] }}</a>
+                <a (click)="send(1)">R$ 500</a>
+                <a (click)="send(2)">R$ 1000</a>
+                <a (click)="send(3)">R$ 1500</a>
+                <a (click)="send(4)">R$ 2000</a>
             </div>
         </div>
     </div>
