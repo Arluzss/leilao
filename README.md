@@ -12,7 +12,36 @@ Bem-vindo ao **NitroAuction**, o leilão de carros definitivo inspirado na adren
 ## 🎯 Recursos Principais
 
 ✅ Interface dinâmica e imersiva inspirada em Need for Speed 🎮
-✅ Leilões em tempo real com atualização instantânea 📡
+✅ Leilões em tempo real com atualização instantânea 💼
 ✅ Cadastro de veículos com fotos e detalhes técnicos 📷
 ✅ Histórico de lances para acompanhar suas apostas 📜
 ✅ Painel administrativo para gerenciamento de leilões e usuários 🛠️
+
+## 🔄 Como Executar
+
+1. **Configurar o Front-end:**
+   - Na pasta raiz do projeto, execute:
+     ```sh
+     npm install
+     ng serve
+     ```
+   - O front-end estará disponível em: [http://localhost:4200](http://localhost:4200)
+
+2. **Configurar o Back-end:**
+   - Navegue até a pasta do back-end e execute:
+     ```sh
+     npm install
+     npm run dev
+     ```
+   - O servidor estará rodando e pronto para processar os lances!
+
+3. **Configurar o WebSocket:**
+   - Na pasta correspondente ao WebSocket, execute:
+     ```sh
+     npm install
+     node dist/index.js
+     ```
+   - Isso garantirá a comunicação em tempo real dos lances.
+
+Agora é só acessar [http://localhost:4200](http://localhost:4200) e aproveitar o leilão! ✨🚀
+
