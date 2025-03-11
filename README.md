@@ -35,13 +35,5 @@ Bem-vindo ao **NitroAuction**, o leilão de carros definitivo inspirado na adren
      ```
    - O servidor estará rodando e pronto para processar os lances!
 
-3. **Configurar o WebSocket:**
-   - Na pasta correspondente ao WebSocket, execute:
-     ```sh
-     npm install
-     node dist/index.js
-     ```
-   - Isso garantirá a comunicação em tempo real dos lances.
-
 Agora é só acessar [http://localhost:4200](http://localhost:4200) e aproveitar o leilão! ✨🚀
 
