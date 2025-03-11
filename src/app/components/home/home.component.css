@@ -27,9 +27,36 @@
     border-radius: 14px;
 }
 
+#center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%; /* Match the width of .top-side */
+    height: calc(100% - 40% - 40px); /* Fill the space between top-side and bottom-side */
+    margin: 0 auto; /* Center horizontally */
+    position: relative; /* Add position relative to center */
+}
+
+#notification{
+    position: absolute;
+    background-color: black;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#notification img {
+    width: 70%;
+    height: 70%;
+}
+
 #grayInside{
     background-color: gray;
-    /* background-color: #bfb5b548; */
     width: 95%;
     height: 65%;
     border-radius: 14px;
@@ -226,4 +253,34 @@ a{
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
     width: 100%;
+}
+
+#mailIcon{
+    position: absolute;
+    left: 110px; /* Position next to notification */
+    top: 0;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+#cignal {
+    display: flex; /* Add flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+#cignal img{
+    width: 100%;
+    height: 100%;
+}
+
+.blinking {
+  animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
 }

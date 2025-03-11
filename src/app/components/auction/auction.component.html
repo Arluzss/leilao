@@ -14,8 +14,34 @@
             <p> {{ car?.name }} </p>
         </div>
     </div>
-    <div id="car">
-        <img src="{{ car?.carSrc}}" alt="" srcset="">
+    <div id="center">
+        <div id="car">
+            <img src="{{ car?.carSrc}}" alt="" srcset="">
+        </div>
+        <div id="side">
+            <div id="buttons">
+                <a (click)="showBids()" [ngClass]="{'selected': showingBids}">Lances</a>
+                <a (click)="showComments()" [ngClass]="{'selected': showingComments}">Comentarios</a>
+            </div>
+            <div id="list-bids" *ngIf="showingBids">
+                <div *ngFor="let bid of car?.bids || []">
+                    <div id="users">
+                        <p>{{ bid.user }} - R$ {{ bid.bidAmount }}</p>
+                    </div>
+                </div>
+            </div>
+            <div id="list-comments" *ngIf="showingComments">
+                <div *ngFor="let comment of car?.comments || []">
+                    <div id="users">
+                        <p>{{ comment.user }} - {{ comment.text }}</p>
+                    </div>
+                </div>
+                <div id="send">
+                    <input type="text" placeholder="Comente algo" [(ngModel)]="commentText">
+                    <a (click)="sendComment()">Enviar</a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="bottom-side">
         <div id="auction-sec" class="bottom-side-sec">
@@ -24,8 +50,7 @@
         </div>
         <div id="status" class="bottom-side-sec">
             <div>
-                <p>Tempo Restante</p>
-                <p>{{ time }}</p>
+                <p>Tempo Restante: {{ time }}</p>
                 <div id="bar-container">
                     <div id="bar" [style.width.%]="progress">
                         <div id="circle"></div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../script/FakeUsers';
+import { Car } from '../interface/CarInterface';
 
 @Component({
   selector: 'app-auction',
@@ -18,6 +19,9 @@ export class AuctionComponent implements OnInit, OnDestroy {
   public progress: number = 100; // Initial progress set to 100%
   prices: number[] = [0, 0, 0, 0];
   car: Car | undefined = undefined;
+  showingBids: boolean = true; // Set to true to show bids by default
+  showingComments: boolean = false;
+  commentText: string = '';
 
   constructor(private route: ActivatedRoute) { }
 
@@ -109,16 +113,57 @@ export class AuctionComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  showBids() {
+    this.showingBids = true;
+    this.showingComments = false;
+  }
+
+  showComments() {
+    this.showingBids = false;
+    this.showingComments = true;
+  }
+
+  sendComment() {
+    const user = this.getUserFromLocalStorage();
+    if (user && this.auctionId && this.category) {
+      const comment = {
+        user: user.firstName,
+        text: this.commentText,
+        timestamp: new Date().toISOString()
+      };
+      fetch(`http://localhost:3000/cars/${this.category}/${this.auctionId}/comment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(comment)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro ao enviar comentário');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Comentário enviado com sucesso:', data);
+        this.commentText = ''; // Clear the input field
+      })
+      .catch(error => {
+        console.error('Erro ao enviar comentário:', error);
+      });
+    }
+  }
 }
 
-interface Car {
-  id: string;
-      name: string;
-      brand: string;
-      year: number;
-      logoSrc: string;
-      carSrc: string;
-      price: number;
-      engine: string;
-      time: number;
-}
+// interface Car {
+//   id: string;
+//       name: string;
+//       brand: string;
+//       year: number;
+//       logoSrc: string;
+//       carSrc: string;
+//       price: number;
+//       engine: string;
+//       time: number;
+// }

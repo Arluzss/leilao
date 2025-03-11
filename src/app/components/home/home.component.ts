@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Car } from '../interface/CarInterface';
 import generateUsers from '../../script/FakeUsers';
 import { User } from '../../script/FakeUsers';
+import { th } from '@faker-js/faker';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { User } from '../../script/FakeUsers';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   audio = new Audio('assets/audio/RidersOnTheStorm.mp3');
   imagePath = 'assets/image/Exposição.png';
   index1: number = 0;
@@ -25,6 +26,9 @@ export class HomeComponent implements OnInit {
   private userId: string | undefined;
   private eventSource: EventSource | undefined;
 
+  mailIconVisible: boolean = false;
+  mailIconBlinking: boolean = false;
+
   startNotifications(): void {
     if (this.userId) {
       this.eventSource = new EventSource(`http://localhost:3000/cars/notification/${this.userId}`);
@@ -34,16 +38,20 @@ export class HomeComponent implements OnInit {
         audio.volume = 0.1;
         audio.play();
         console.log(event.data);
+        this.mailIconVisible = true;
+        this.mailIconBlinking = true;
       };
     }
   }
 
+  handleMailIconClick(): void {
+    this.mailIconBlinking = false;
+  }
+
   play(): void {
-    if (localStorage.getItem('isPlaying') == 'false') {
+    if (localStorage.getItem('isPlaying') !== 'true') {
       this.audio.play();
       localStorage.setItem('isPlaying', 'true');
-    } else {
-      console.log('A música já está tocando.');
     }
   }
 
@@ -172,5 +180,11 @@ export class HomeComponent implements OnInit {
       this.startNotifications();
     }
     this.fetchCars();
+    this.play(); // Call play method when the user enters the page
+  }
+
+  ngOnDestroy(): void {
+    localStorage.setItem('isPlaying', 'false');
+    this.eventSource?.close();
   }
 }

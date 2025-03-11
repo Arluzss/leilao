@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
-
 .container{
     width: 100vw;
     height: 100vh;
@@ -46,9 +45,16 @@
 #carLogo{
     position: relative;
     width: 10%;
-    height: 80%;
+    height: 90%;
     left: 10em;
     border-radius: 14px;
+    overflow: hidden; /* Ensure the logo stays within the boundaries */
+    margin-top: 1%;
+}
+
+#carLogo img{
+    width: 90%;
+    height: 90%;
 }
 
 #arrows{
@@ -172,6 +178,7 @@
     text-decoration: none;
     border: 4px solid white;
     border-radius: 12px;
+    cursor: pointer;
 }
 
 #circle{
@@ -202,6 +209,43 @@
 
 #auction-sec a{
     width: 80%;
+}
+
+#buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add small space between the buttons */
+    margin-bottom: 10px; /* Add some margin below the buttons */
+}
+
+#buttons a {
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: "Roboto Condensed", sans-serif;
+    font-style: Italic;
+    text-decoration: none;
+    border: 4px solid white;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#users {
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with 40% opacity */
+    width: 90%; /* Increase width */
+    height: auto; /* Adjust height to fit content */
+    margin: 10px auto; /* Center horizontally and add vertical spacing */
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 12px; /* Round the borders */
+    text-align: center; /* Center the text */
+}
+
+#users p {
+    font-size: 1.2em; /* Increase text size */
+    color: white; /* Ensure text color is white */
+    opacity: 1; /* Ensure text does not lose opacity */
 }
 
 p{
@@ -239,4 +283,69 @@ a{
     width: auto;
     height: auto;
     top: 0;
+}
+
+#side {
+    background-color: rgba(0, 0, 0, 0.3); /* Black background with 30% opacity */
+    position: absolute;
+    top: 0; /* Start from the top of center */
+    right: 0; /* Align to the right of center */
+    width: 30%; /* Adjust width as needed */
+    height: 100%; /* Fill the height of center */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#center {
+    width: 70%; /* Same width as top-side */
+    height: calc(100% - 40%); /* Fill the space between top-side and bottom-side */
+    margin-top: 22%; /* Adjust margin to start below top-side */
+    margin-bottom: 20%; /* Adjust margin to end above bottom-side */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute; /* Ensure child elements are positioned relative to center */
+}
+
+#send {
+    display: flex;
+    justify-content: center; /* Center the input and button horizontally */
+    align-items: center; /* Center the input and button vertically */
+    padding: 10px; /* Add padding for better spacing */
+    position: sticky; /* Make the send div sticky */
+    bottom: 0; /* Stick to the bottom */
+    background-color: rgba(0, 0, 0, 0.3); /* Match the background of side */
+    width: calc(100% - 20px); /* Full width of the side with padding */
+    margin: 0 10px; /* Add margin to ensure it stays within the side */
+}
+
+#send input {
+    flex: 1;
+    margin-right: 10px; /* Add some space between the input and button */
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 12px; /* Round the borders */
+    border: 2px solid white; /* Add border */
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with 40% opacity */
+    color: white; /* White text color */
+}
+
+#send a {
+    padding: 10px 20px; /* Add padding for better spacing */
+    border-radius: 12px; /* Round the borders */
+    border: 2px solid white; /* Add border */
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with 40% opacity */
+    color: white; /* White text color */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer;
+}
+
+.selected {
+    border: 2px solid #C9D971;
+    color: #C9D971;
+}
+
+#buttons a.selected {
+    border: 2px solid #C9D971;
+    color: #C9D971;
 }

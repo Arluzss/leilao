@@ -1,15 +1,18 @@
 export interface Car {
-    id: string;
-    nome: string;
-    brand: string;
-    year: number;
-    price: number;
-    engine: string;
-    time: number;
-    bids?: Bid[]; // Lista de lances
-    parts?: Parts[]; // Lista de peças
-    comments?: Comment[]; // Lista de comentários
-  }
+  id: string;
+  name: string;
+  brand: string;
+  year: number;
+  price: number;
+  logoSrc: string;
+  carSrc: string;
+  km: number;
+  engine: string;
+  time: number;
+  bids?: Bid[]; // Lista de lances
+  parts?: Parts[]; // Lista de peças
+  comments?: Comment[]; // Lista de comentários
+}
 
   export interface Parts{
     name: string;

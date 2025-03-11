@@ -18,8 +18,21 @@
             <div id="arrowRight" (click)="changeCar(1)"></div>
         </div>
     </div>
-    <div id="car">
-        <img src="{{ currentCar.carSrc }}" alt="" srcset="">
+    <div id="center">
+        <div id="notification">
+            <div id="cignal">
+                <img src="assets/image/Cingular.png" alt="">
+            </div>
+        </div>
+        <div id="mailIcon" 
+             [class.blinking]="mailIconBlinking" 
+             *ngIf="mailIconVisible" 
+             (click)="handleMailIconClick()">
+          <img src="assets/image/Mail.png" alt="Mail Icon">
+        </div>
+        <div id="car">
+            <img src="{{ currentCar.carSrc }}" alt="" srcset="">
+        </div>
     </div>
     <div class="bottom-side">
         <div id="info">

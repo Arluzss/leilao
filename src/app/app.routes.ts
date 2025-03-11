@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // 👈 Importação necessária
+import { CommonModule } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
 import { AuctionComponent } from './components/auction/auction.component';
-import { CommonModule } from '@angular/common';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -13,7 +14,8 @@ export const routes: Routes = [
 @NgModule({
   declarations: [HomeComponent, AuctionComponent],
   imports: [RouterModule.forRoot(routes),
-  RouterModule, CommonModule],
+  RouterModule, CommonModule, FormsModule], // 👈 Adicione aqui
   exports: [RouterModule],
 })
+
 export class AppRoutingModule {}

@@ -1,6 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import CarModel from "./models/Car";
 import { clients } from './routes/carRoutes';
+import { Car } from './interface/CarInterface';
 // import { CarInterface } from './interface/CarInterface';
 
 const wss = new WebSocketServer({ port: 8080 });
@@ -62,22 +63,17 @@ wss.on('connection', (ws: WebSocket, req) => {
 
 console.log('WebSocket server is running on ws://localhost:8080');
 
-interface Car {
-    id: string;
-    name: string;
-    brand: string;
-    year: number;
-    logoSrc: string;
-    carSrc: string;
-    price: number;
-    engine: string;
-    time: number;
-}
-
-interface Categoria {
-    popular: Car[];
-    luxo: Car[];
-}
+// interface Car {
+//     id: string;
+//     name: string;
+//     brand: string;
+//     year: number;
+//     logoSrc: string;
+//     carSrc: string;
+//     price: number;
+//     engine: string;
+//     time: number;
+// }
 
 // Função para listar categorias corretamente
 async function findCarById(id: string): Promise<Car | undefined> {
@@ -105,7 +101,10 @@ async function findCarById(id: string): Promise<Car | undefined> {
                 carSrc: car.carSrc,
                 price: car.price,
                 engine: car.engine,
-                time: 120
+                time: 120,
+                km: car.km,
+                comments: car.comments,
+                bids: car.bids,
             };
         }
     }
