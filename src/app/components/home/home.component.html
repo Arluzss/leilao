@@ -11,60 +11,28 @@
         <div id="grayBar"></div>
         <div id="grayInside">
             <div id="arrowLeft" (click)="changeCar(-1)"></div>
-            <div id="carLogo"></div>
-            <p>{{ currentCar.nome }}</p>
+            <div id="carLogo">
+                <img src="{{ currentCar.logoSrc }}" alt="" srcset="">
+            </div>
+            <p>{{ currentCar.name }}</p>
             <div id="arrowRight" (click)="changeCar(1)"></div>
         </div>
     </div>
     <div id="car">
-        <img src="{{ imagePath }}" alt="" srcset="">
+        <img src="{{ currentCar.carSrc }}" alt="" srcset="">
     </div>
     <div class="bottom-side">
         <div id="info">
             <p>Ano: {{ currentCar.year }}<br>
                 Motorização: {{ currentCar.engine }}<br>
-                Tipo de Câmbio: Manual<br>
-                Quilometragem: 60.000 km<br>
-                Combustível: Gasolina
+                Quilometragem:{{currentCar.km}}<br>
             </p>
         </div>
         <div id="status" class="bottom-side-sec">
             <div id="section">
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
-                        <div id="circle"></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
-                        <div id="circle"></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
-                        <div id="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="section">
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
-                        <div id="circle"></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
-                        <div id="circle"></div>
-                    </div>
-                </div>
-                <div>
-                    <p>Motor</p>
-                    <div id="bar">
+                <div *ngFor="let part of currentCar.parts">
+                    <p>{{ part.name }} - Avaliação: {{ part.rating }}</p>
+                    <div id="bar" [style.width.%]="part.rating * 10">
                         <div id="circle"></div>
                     </div>
                 </div>
@@ -72,7 +40,7 @@
         </div>
         <div id="auction-sec" class="bottom-side-sec">
             <p>Lance atual</p>
-            <p *ngIf="currentCar">R$ {{ currentCar.preco }}</p>
+            <p *ngIf="currentCar">R$ {{ currentCar.price }}</p>
             <a [routerLink]="['/auction', currentCategory, currentCar.id]" (click)="closeConnection()">Entrar</a>
         </div>
     </div>

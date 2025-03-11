@@ -18,64 +18,115 @@ mongoose
           popular: [
             {
               id: 1,
-              nome: "GOLF CONFORTLINE",
-              marca: "Volkswagen",
-              preco: 50000,
-              imagem: "gol.jpg",
-              bids: [{ user: "João", bidAmount: 50500 }],
-              comments: [{ user: "Maria", text: "Ótimo carro!" }]
+              name: "Golf Confortline",
+              brand: "Volkswagen",
+              year: 2019,
+              price: 50000,
+              km: 10000,
+              engine: "1.4 TSI",
+              logoSrc: "http://localhost:3000/cars/logo",
+              carSrc: "http://localhost:3000/cars/CarImage",
+              bids: [
+                { user: "João", bidAmount: 50500 },
+                { user: "Ana", bidAmount: 51000 }
+              ],
+              parts: [
+                { name: "Motor", rating: 8 },
+                { name: "Freios", rating: 7 },
+                { name: "Suspensão", rating: 8 },
+                { name: "Interior", rating: 8 },
+                { name: "Estrutura", rating: 7 },
+                { name: "Pintura", rating: 8 }
+              ],
+              comments: [
+                { user: "Maria", text: "Ótimo carro!" },
+                { user: "Carlos", text: "Muito econômico." }
+              ]
             },
             {
               id: 2,
-              nome: "Onix",
-              marca: "Chevrolet",
-              preco: 60000,
-              imagem: "onix.jpg",
-              bids: [{ user: "Carlos", bidAmount: 61000 }],
-              comments: [{ user: "Ana", text: "Muito econômico!" }]
-            },
-            {
-              id: 3,
-              nome: "Fiesta",
-              marca: "Ford",
-              preco: 55000,
-              imagem: "fiesta.jpg",
-              bids: [{ user: "Pedro", bidAmount: 56000 }],
-              comments: [{ user: "Clara", text: "Bom custo-benefício." }]
+              name: "Fiesta SE",
+              brand: "Ford",
+              year: 2018,
+              price: 40000,
+              km: 12000,
+              engine: "1.6 Flex",
+              logoSrc: "ford.png",
+              carSrc: "fiesta.jpg",
+              bids: [
+                { user: "Lucas", bidAmount: 40500 }
+              ],
+              parts: [
+                { name: "Motor", rating: 7 },
+                { name: "Freios", rating: 8 },
+                { name: "Suspensão", rating: 7 },
+                { name: "Interior", rating: 7 },
+                { name: "Estrutura", rating: 7 },
+                { name: "Pintura", rating: 7 }
+              ],
+              comments: [
+                { user: "Beatriz", text: "Ótimo custo-benefício." }
+              ]
             }
           ],
           luxo: [
             {
+              id: 3,
+              name: "Civic Touring",
+              brand: "Honda",
+              year: 2022,
+              price: 150000,
+              logoSrc: "honda.png",
+              km: 5000,
+              engine: "1.5 Turbo",
+              carSrc: "civic.jpg",
+              bids: [
+                { user: "Ricardo", bidAmount: 152000 },
+                { user: "Fernanda", bidAmount: 153500 }
+              ],
+              parts: [
+                { name: "Motor", rating: 9 },
+                { name: "Freios", rating: 9 },
+                { name: "Suspensão", rating: 9 },
+                { name: "Interior", rating: 9 },
+                { name: "Estrutura", rating: 9 },
+                { name: "Pintura", rating: 9 }
+              ],
+              comments: [
+                { user: "Fernanda", text: "Excelente conforto." },
+                { user: "Eduardo", text: "Dirigibilidade incrível." }
+              ]
+            },
+            {
               id: 4,
-              nome: "Civic",
-              marca: "Honda",
-              preco: 100000,
-              imagem: "civic.jpg",
-              bids: [{ user: "Ricardo", bidAmount: 102000 }],
-              comments: [{ user: "Fernanda", text: "Excelente conforto." }]
-            },
-            {
-              id: 5,
-              nome: "Corolla",
-              marca: "Toyota",
-              preco: 110000,
-              imagem: "corolla.jpg",
-              bids: [{ user: "Lucas", bidAmount: 112000 }],
-              comments: [{ user: "Juliana", text: "Dirigibilidade incrível!" }]
-            },
-            {
-              id: 6,
-              nome: "Accord",
-              marca: "Honda",
-              preco: 120000,
-              imagem: "accord.jpg",
-              bids: [{ user: "Marcos", bidAmount: 122000 }],
-              comments: [{ user: "Sofia", text: "Luxo e potência." }]
+              name: "BMW 320i",
+              brand: "BMW",
+              year: 2021,
+              price: 200000,
+              logoSrc: "bmw.png",
+              km: 8000,
+              engine: "2.0 Turbo",
+              carSrc: "bmw320i.jpg",
+              bids: [
+                { user: "Marcos", bidAmount: 202500 }
+              ],
+              parts: [
+                { name: "Motor", rating: 10 },
+                { name: "Freios", rating: 9 },
+                { name: "Suspensão", rating: 9 },
+                { name: "Interior", rating: 10 },
+                { name: "Estrutura", rating: 9 },
+                { name: "Pintura", rating: 9 }
+              ],
+              comments: [
+                { user: "Roberta", text: "Luxo e potência!" }
+              ]
             }
           ]
         }
       ]
     };
+    
 
     // Inserir os dados no MongoDB
     await CarCollection.create(carsData);

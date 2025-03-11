@@ -12,13 +12,22 @@ const CommentSchema = new Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
+const partSchema = new Schema({
+  name: { type: String, required: true },
+  rating: { type: Number, min: 0, max: 10, required: true }
+});
+
 const CarSchema = new Schema({
   id: { type: Number, required: true },
-  nome: { type: String, required: true },
-  marca: { type: String, required: true },
-  preco: { type: Number, required: true },
-  imagem: { type: String, required: true },
+  name: { type: String, required: true },
+  brand: { type: String, required: true },
+  year: { type: Number, required: true },
+  price: { type: Number, required: true },
+  km: { type: Number, required: true },
+  logoSrc: { type: String, required: true },
+  carSrc: { type: String, required: true },
   bids: [BidSchema],
+  parts: [partSchema],
   comments: [CommentSchema]
 });
 

@@ -8,12 +8,14 @@
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
-            <div id="carLogo"></div>
-            <p> {{ car?.nome }} </p>
+            <div id="carLogo">
+                <img src="{{ car?.logoSrc }}" alt="">
+            </div>
+            <p> {{ car?.name }} </p>
         </div>
     </div>
     <div id="car">
-        <img src="" alt="" srcset="">
+        <img src="{{ car?.carSrc}}" alt="" srcset="">
     </div>
     <div class="bottom-side">
         <div id="auction-sec" class="bottom-side-sec">
@@ -24,9 +26,11 @@
             <div>
                 <p>Tempo Restante</p>
                 <p>{{ time }}</p>
-                    <div id="bar">
+                <div id="bar-container">
+                    <div id="bar" [style.width.%]="progress">
                         <div id="circle"></div>
                     </div>
+                </div>
             </div>
             <div id="baragada">
                 <a (click)="send(1)">R$ 500</a>
@@ -36,4 +40,4 @@
             </div>
         </div>
     </div>
-</div>  
+</div>
