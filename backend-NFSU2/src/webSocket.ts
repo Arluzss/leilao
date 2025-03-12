@@ -63,19 +63,6 @@ wss.on('connection', (ws: WebSocket, req) => {
 
 console.log('WebSocket server is running on ws://localhost:8080');
 
-// interface Car {
-//     id: string;
-//     name: string;
-//     brand: string;
-//     year: number;
-//     logoSrc: string;
-//     carSrc: string;
-//     price: number;
-//     engine: string;
-//     time: number;
-// }
-
-// Função para listar categorias corretamente
 async function findCarById(id: string): Promise<Car | undefined> {
     const carId = Number(id);
     const carCollection = await CarModel.findOne({});
@@ -159,6 +146,7 @@ const sendNotification = (message: string, type: 'bid' | 'end') => {
         const clientSession = session.find(s => s.userID === client.id);
         if (!clientSession) {
             client.send(JSON.stringify({ message, type }));
+            console.log("Enviando notificação para o usuário");
         }
     });
 };
@@ -180,6 +168,7 @@ async function updateTime() {
         car = await findCarById(s.auctionID);
         if (car) {
             car.time = time;
+            s.client.send(JSON.stringify(car));
         }
     });
 

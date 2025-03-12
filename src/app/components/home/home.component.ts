@@ -38,13 +38,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.eventSource = new EventSource(`http://localhost:3000/cars/notification/${this.userId}`);
       console.log('EventSource created', this.userId);
       this.eventSource.onmessage = event => {
-        if (this.audioService.isPlaying()) {
-          // If music is playing, do not display the notification
-          return;
-        }
 
         const audio = new Audio('assets/audio/FE_COMMON_MB_16.wav');
-        audio.volume = 0.1;
+        audio.volume = 0.2;
         audio.play();
         this.mailIconVisible = true;
         this.mailIconBlinking = true;

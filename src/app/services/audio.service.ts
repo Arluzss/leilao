@@ -12,6 +12,7 @@ export class AudioService {
     if (!this.audio) {
       this.audio = new Audio(url);
       this.audio.loop = true; // Se quiser que a música continue em loop
+      this.audio.volume = 0.4; // Volume de 0 a 1
       this.audio.play();
     }
   }
