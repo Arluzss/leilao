@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900&display=swap');
 
 
 .container{
@@ -264,6 +264,70 @@ a{
     cursor: pointer;
 }
 
+#message{
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 50%;
+    height: 90%;
+    border-radius: 12px;
+    border: 3px solid white;
+    background-color: black;
+}
+
+#cingular-icon{
+    position: absolute; /* Change to absolute positioning */
+    top: 0;
+    left: 0; /* Align to the left side */
+    margin: 1em;
+    width: 92%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+#bar-message{
+    background-color: #373434;
+    width: 98%;
+    height: 3.5em;
+    border-radius: 20px;
+    margin-top: 5em; /* Add margin to position below cingular-icon */
+}
+
+#text-content{
+    background-color: #373434;
+    width: 98%;
+    height: 65%;
+    border-radius: 20px;
+    margin-top: 0.5em; /* Reduce margin to make the distance small but noticeable */
+    color: white; /* Set text color to white */
+    font-family: "Roboto Condensed", sans-serif; /* Match font family */
+    font-style: Italic; /* Match font style */
+}
+
+#text-content p {
+    color: white; /* Ensure any <p> elements inside #text-content are also white */
+    font-family: "Roboto Condensed", sans-serif; /* Match font family */
+    font-style: Italic; /* Match font style */
+}
+
+#text-content p {
+    color: white; /* Ensure any <p> elements inside #text-content are also white */
+}
+
+#cingular-icon img{
+    width: 40px;
+    height: 40px;
+}
+
+#cingular-icon p{
+    margin-left: 10px;
+    font-size: 1.5em;
+    color: white;
+}
+
 #cignal {
     display: flex; /* Add flexbox */
     justify-content: center; /* Center horizontally */
@@ -283,4 +347,26 @@ a{
   0% { opacity: 1; }
   50% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+#buttons {
+    display: flex;
+    justify-content: space-between; /* Space out the items */
+    width: 100%;
+    padding: 0.5em; /* Add padding to create space between the border and the buttons */
+}
+
+#buttons a:first-child {
+    order: 1;
+}
+
+#buttons a:last-child {
+    order: 2; 
+}
+
+.right-text {
+    position: absolute;
+    right: 0; 
+    white-space: nowrap; 
+    padding-top: 4px;
 }

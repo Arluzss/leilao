@@ -1,4 +1,4 @@
-<div class="container" (click)="play()">
+<div class="container">
     <div class="top-side">
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
@@ -32,6 +32,19 @@
         </div>
         <div id="car">
             <img src="{{ currentCar.carSrc }}" alt="" srcset="">
+        </div>
+        <div id="message" *ngIf="messageVisible">
+            <div id="cingular-icon">
+                <img src="assets/image/Cingular.png" alt="" srcset="">
+                <p>Cingular</p>
+                <p class="right-text">Mensagem Recebida</p> <!-- Add class for right alignment -->
+            </div>
+            <div id="bar-message"></div>
+            <div id="text-content" #textContent></div> <!-- Add template reference variable -->
+            <div id="buttons">
+                <a href="">Ok</a>
+                <a href="">Sair</a>
+            </div>
         </div>
     </div>
     <div class="bottom-side">

@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Car } from '../interface/CarInterface';
 import generateUsers from '../../script/FakeUsers';
 import { User } from '../../script/FakeUsers';
-import { th } from '@faker-js/faker';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,6 @@ import { th } from '@faker-js/faker';
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
-  audio = new Audio('assets/audio/RidersOnTheStorm.mp3');
   imagePath = 'assets/image/Exposição.png';
   index1: number = 0;
   index2: number = 0;
@@ -28,31 +27,57 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   mailIconVisible: boolean = false;
   mailIconBlinking: boolean = false;
+  messageVisible: boolean = false; // Add this line
+
+  @ViewChild('textContent') textContent!: ElementRef;
+
+  constructor(private audioService: AudioService) {}
 
   startNotifications(): void {
     if (this.userId) {
       this.eventSource = new EventSource(`http://localhost:3000/cars/notification/${this.userId}`);
       console.log('EventSource created', this.userId);
       this.eventSource.onmessage = event => {
+        if (this.audioService.isPlaying()) {
+          // If music is playing, do not display the notification
+          return;
+        }
+
         const audio = new Audio('assets/audio/FE_COMMON_MB_16.wav');
         audio.volume = 0.1;
         audio.play();
-        console.log(event.data);
         this.mailIconVisible = true;
         this.mailIconBlinking = true;
+        this.messageVisible = false; // Ensure message is hidden when a new notification arrives
+
+        const eventData = JSON.parse(event.data);
+        let message = '';
+        if (eventData.type === 'bid') {
+          message = `🔔 Notificação: Um novo lance foi feito. Tempo do leilão resetado. Hora: ${eventData.message.split('Hora: ')[1]}`;
+        } else if (eventData.type === 'end') {
+          message = `🔔 Notificação: O tempo do leilão acabou. Hora: ${eventData.message.split('Hora: ')[1]}`;
+        }
+        console.log('message:', message);
+        this.updateMessageContent(message);
       };
+    }
+  }
+
+  updateMessageContent(message: string): void {
+    const user = this.getUserFromLocalStorage();
+    const userName = user ? `${user.firstName} ${user.lastName}` : 'Usuário';
+    const formattedMessage = `<p>De: Sistema</p><p>Para: ${userName}</p><p>${message}</p>`;
+
+    if (this.textContent) {
+      this.textContent.nativeElement.innerHTML = formattedMessage;
+    } else {
+      setTimeout(() => this.updateMessageContent(message), 100);
     }
   }
 
   handleMailIconClick(): void {
     this.mailIconBlinking = false;
-  }
-
-  play(): void {
-    if (localStorage.getItem('isPlaying') !== 'true') {
-      this.audio.play();
-      localStorage.setItem('isPlaying', 'true');
-    }
+    this.messageVisible = true; // Show the message when the mail icon is clicked
   }
 
   changeCategory(n: number) {
@@ -65,7 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       audio.volume = 0.1;
       audio.play();
     }
-    
+
     this.index1 += n;
     if (this.categorys[this.index1]) {
       this.currentCategory = this.categorys[this.index1];
@@ -106,22 +131,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   closeConnection(): void {
     let audio = new Audio('assets/audio/FE_COMMON_MB_05.wav');
-    audio.volume = 0.2;
+    audio.volume = 0.1;
     audio.play();
     if (this.socket) {
-      this.socket
-        .close();
+      this.socket.close();
     }
   }
 
   changeCar(n: number): void {
     if (n == 1) {
       let audio = new Audio('assets/audio/FE_COMMON_MB_01.wav');
-      audio.volume = 0.2;
+      audio.volume = 0.1;
       audio.play();
     } else {
       let audio = new Audio('assets/audio/FE_COMMON_MB_02.wav');
-      audio.volume = 0.2;
+      audio.volume = 0.1;
       audio.play();
     }
     this.index2 += n;
@@ -135,10 +159,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openAndClose(): void {
-    if(this.socket){
+    if (this.socket) {
       this.closeConnection();
     }
-    else{
+    else {
       this.connectWebSocket();
     }
   }
@@ -180,11 +204,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.startNotifications();
     }
     this.fetchCars();
-    this.play(); // Call play method when the user enters the page
+
+    // Automatically play the music when the component initializes
+    this.audioService.playAudio('assets/audio/RidersOnTheStorm.mp3');
+    this.audioService.isPlaying();
   }
 
   ngOnDestroy(): void {
-    localStorage.setItem('isPlaying', 'false');
     this.eventSource?.close();
   }
 }

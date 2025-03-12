@@ -147,18 +147,18 @@ async function changeCarPrice(user: User, cate: string, id: string, value: keyof
         }
     );
 
-    sendNotification(`🔔 Notificação para usuário \n\n Um safado fez um lance novo, resetando o tempo do leilão \n Hora: ${new Date().toLocaleTimeString()}`);
+    sendNotification(`🔔 Notificação para usuário Um safado fez um lance novo, resetando o tempo do leilão Hora: ${new Date().toLocaleTimeString()}`, 'bid');
     time = 120;
     return car;
 }
 
-const sendNotification = (message: string) => {
+const sendNotification = (message: string, type: 'bid' | 'end') => {
     console.log(clients.length);
 
     clients.forEach(client => {
         const clientSession = session.find(s => s.userID === client.id);
         if (!clientSession) {
-            client.send(message);
+            client.send(JSON.stringify({ message, type }));
         }
     });
 };
@@ -180,13 +180,12 @@ async function updateTime() {
         car = await findCarById(s.auctionID);
         if (car) {
             car.time = time;
-            s.client.send(JSON.stringify(car));
         }
     });
 
     if (time === 0) {
         time = 120;
-        sendNotification(`🔔 Notificação para usuário \n\n O tempo do leilão acabou \n Hora: ${new Date().toLocaleTimeString()}`);
+        sendNotification(`🔔 Notificação para usuário O tempo do leilão acabou Hora: ${new Date().toLocaleTimeString()}`, 'end');
     }
 }
 

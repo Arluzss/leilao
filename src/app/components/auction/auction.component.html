@@ -24,7 +24,7 @@
                 <a (click)="showComments()" [ngClass]="{'selected': showingComments}">Comentarios</a>
             </div>
             <div id="list-bids" *ngIf="showingBids">
-                <div *ngFor="let bid of car?.bids || []">
+                <div *ngFor="let bid of (car?.bids || []).slice().reverse()">
                     <div id="users">
                         <p>{{ bid.user }} - R$ {{ bid.bidAmount }}</p>
                     </div>
