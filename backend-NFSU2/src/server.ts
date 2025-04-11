@@ -1,9 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import carRoutes from "./routes/carRoutes";
-import "./webSocket";
+import "./services/webSocket.service";
+import client from "../postgresDB";
 
 dotenv.config();
 
@@ -16,11 +16,13 @@ app.use(express.json());
 // Rotas
 app.use("/cars", carRoutes);
 
-// Conexão ao MongoDB
-mongoose
-  .connect(process.env.MONGO_URI || "")
+client.connect()
   .then(() => {
-    console.log("Conectado ao MongoDB");
-    app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-  })
-  .catch((err) => console.error("Erro ao conectar ao MongoDB", err));
+    console.log("✅ Conectado ao PostgreSQL! 🚀");
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    });
+  }).catch((err) => {
+    console.error("❌ Erro ao conectar ao PostgreSQL:", err);
+  });
+

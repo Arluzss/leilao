@@ -7,14 +7,14 @@ import { AuctionComponent } from './components/auction/auction.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'auction/:category/:id', component: AuctionComponent},
+  {path: 'auction', component: AuctionComponent},
   {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
   declarations: [HomeComponent, AuctionComponent],
   imports: [RouterModule.forRoot(routes),
-  RouterModule, CommonModule, FormsModule], // 👈 Adicione aqui
+  RouterModule, CommonModule, FormsModule],
   exports: [RouterModule],
 })
 

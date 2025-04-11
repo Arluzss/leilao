@@ -3,20 +3,20 @@
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <p>{{ category }}</p>
+                <p>{{ currentCategory }}</p>
             </div>
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
             <div id="carLogo">
-                <img src="{{ car?.logoSrc }}" alt="">
+                <img src="{{ currentCarLink['logo'] }}" alt="">
             </div>
-            <p> {{ car?.name }} </p>
+            <p> {{ currentCar?.name }} </p>
         </div>
     </div>
     <div id="center">
         <div id="car">
-            <img src="{{ car?.carSrc}}" alt="" srcset="">
+            <img src="{{ currentCarLink['imagem-carro']}}" alt="" srcset="">
         </div>
         <div id="side">
             <div id="buttons">
@@ -24,35 +24,35 @@
                 <a (click)="showComments()" [ngClass]="{'selected': showingComments}">Comentarios</a>
             </div>
             <div id="list-bids" *ngIf="showingBids">
-                <div *ngFor="let bid of (car?.bids || []).slice().reverse()">
+                <!-- <div *ngFor="let bid of (car?.bids || []).slice().reverse()">
                     <div id="users">
                         <p>{{ bid.user }} - R$ {{ bid.bidAmount }}</p>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="list-comments" *ngIf="showingComments">
-                <div *ngFor="let comment of car?.comments || []">
+                <!-- <div *ngFor="let comment of car?.comments || []">
                     <div id="users">
                         <p>{{ comment.user }} - {{ comment.text }}</p>
                     </div>
-                </div>
+                </div> -->
                 <div id="send">
                     <input type="text" placeholder="Comente algo" [(ngModel)]="commentText">
-                    <a (click)="sendComment()">Enviar</a>
+                    <a (click)="sendComment()">^</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="bottom-side">
         <div id="auction-sec" class="bottom-side-sec">
-            <p>Lance atual</p>
-            <p>R$ {{ currentPrice }} </p>
+            <p>Valor acumulado</p>
+            <p>R$ {{ valueAcummuled }} </p>
         </div>
         <div id="status" class="bottom-side-sec">
             <div>
-                <p>Tempo Restante: {{ time }}</p>
+                <p>Tempo Restante: {{time}} </p>
                 <div id="bar-container">
-                    <div id="bar" [style.width.%]="progress">
+                    <div id="bar" [style.width.%]="this.time">
                         <div id="circle"></div>
                     </div>
                 </div>

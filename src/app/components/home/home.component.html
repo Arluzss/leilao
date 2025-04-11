@@ -3,19 +3,19 @@
         <div id="infoTags">
             <p style="color: #C9D971;">Carro em Leilão</p>
             <div id="arrows">
-                <div id="arrowLeft" (click)="changeCategory(-1)"></div>
+                <div id="arrowLeft" (click)="changeCategory('previous')"></div>
                 <p>{{currentCategory}}</p>
-                <div id="arrowRight" (click)="changeCategory(1)"></div>
+                <div id="arrowRight" (click)="changeCategory('next')"></div>
             </div>
         </div>
         <div id="grayBar"></div>
         <div id="grayInside">
-            <div id="arrowLeft" (click)="changeCar(-1)"></div>
+            <div id="arrowLeft" (click)="changeCar('previous')"></div>
             <div id="carLogo">
-                <img src="{{ currentCar.logoSrc }}" alt="" srcset="">
+                <img *ngIf="currentCarLink['logo']" src="{{currentCarLink['logo']}}" alt="" srcset="">
             </div>
-            <p>{{ currentCar.name }}</p>
-            <div id="arrowRight" (click)="changeCar(1)"></div>
+            <p id="nameCar">{{currentCar?.name}}</p>
+            <div id="arrowRight" (click)="changeCar('next')"></div>
         </div>
     </div>
     <div id="center">
@@ -24,23 +24,20 @@
                 <img src="assets/image/Cingular.png" alt="">
             </div>
         </div>
-        <div id="mailIcon" 
-             [class.blinking]="mailIconBlinking" 
-             *ngIf="mailIconVisible" 
-             (click)="handleMailIconClick()">
-          <img src="assets/image/Mail.png" alt="Mail Icon">
+        <div id="mailIcon" [class.blinking]="mailIconBlinking" *ngIf="mailIconVisible" (click)="handleMailIconClick()">
+            <img src="assets/image/Mail.png" alt="Mail Icon">
         </div>
         <div id="car">
-            <img src="{{ currentCar.carSrc }}" alt="" srcset="">
+            <img *ngIf="currentCarLink" src="{{currentCarLink['imagem-carro']}}" alt="" srcset="">
         </div>
         <div id="message" *ngIf="messageVisible">
             <div id="cingular-icon">
                 <img src="assets/image/Cingular.png" alt="" srcset="">
                 <p>Cingular</p>
-                <p class="right-text">Mensagem Recebida</p> <!-- Add class for right alignment -->
+                <p class="right-text">Mensagem Recebida</p>
             </div>
             <div id="bar-message"></div>
-            <div id="text-content" #textContent></div> <!-- Add template reference variable -->
+            <div id="text-content" #textContent></div>
             <div id="buttons">
                 <a href="">Ok</a>
                 <a href="">Sair</a>
@@ -49,25 +46,25 @@
     </div>
     <div class="bottom-side">
         <div id="info">
-            <p>Ano: {{ currentCar.year }}<br>
-                Motorização: {{ currentCar.engine }}<br>
-                Quilometragem:{{currentCar.km}}<br>
+            <p>Ano: {{currentCar?.year}} <br>
+                <!-- Motorização:{{carSelected.engine}}<br> -->
+                Quilometragem: {{currentCar?.km}}<br>
             </p>
         </div>
         <div id="status" class="bottom-side-sec">
             <div id="section">
-                <div *ngFor="let part of currentCar.parts">
-                    <p>{{ part.name }} - Avaliação: {{ part.rating }}</p>
-                    <div id="bar" [style.width.%]="part.rating * 10">
+                <!-- <div *ngFor="let part of currentCar.parts">
+                    <p>{{ part.rating }}</p>
+                    <div id="bar" [style.width.%]="part.rating * 8">
                         <div id="circle"></div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div id="auction-sec" class="bottom-side-sec">
-            <p>Lance atual</p>
-            <p *ngIf="currentCar">R$ {{ currentCar.price }}</p>
-            <a [routerLink]="['/auction', currentCategory, currentCar.id]" (click)="closeConnection()">Entrar</a>
+            <p>Valor acumulado</p>
+            <p>{{currentCar?.price}}</p>
+            <a [routerLink]="['auction']" (click)="closeConnection()">Entrar</a>
         </div>
     </div>
 </div>

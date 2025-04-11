@@ -47,3 +47,7 @@ webSocket/dist
 webSocket/node_modules
 
 backend-NFSU2/node_modules
+
+.gitignore
+nginx.conf
+DockerFile
