@@ -1,4 +1,4 @@
-import client from "../postgresDB";
+import client from "../../postgresDB";
 
 const carsData = [
   {

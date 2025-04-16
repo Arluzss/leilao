@@ -1,7 +1,8 @@
 import WebSocket from 'ws';
-import { handleMessage } from './auction.service';
+import { handleMessage } from './handleMessage';
+import { env } from '../../config/env';
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: Number(env.ws.port) || 8080 });
 let clients: WebSocket[] = [];
 
 wss.on('connection', (ws: WebSocket, req) => {
@@ -21,4 +22,4 @@ wss.on('connection', (ws: WebSocket, req) => {
     });
 });
 
-console.log('WebSocket server running on ws://localhost:8080');
+console.log('WebSocket server running on ws://localhost:' + env.ws.port || 8080);

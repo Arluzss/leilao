@@ -1,8 +1,7 @@
 import WebSocket from 'ws';
-import { Client } from '../models/client.model';
-import { getAll } from './car.service';
-import { Car } from '../models/car.model';
-import { removeCarByID } from '../routes/querys/postgresQuerys';
+import { Client } from '../client/client.model';
+import { Car } from '../car/car.model';
+import { carService } from '../car/car.service';
 
 const ValueMapping = {
     1: 500,
@@ -16,12 +15,14 @@ class AuctionManager {
     private cars: Car[] = [];
 
     constructor() {
-        getAll().then(cars => {
-            this.cars = cars;
-            this.cars.forEach(car => {
-                this.auctions.set(car.id, new Auction(car.id));
-            });
-        });
+        carService
+            .getAllCars()
+            .then(cars => {
+                this.cars = cars as Car[];
+                this.cars.forEach(car => {
+                    this.auctions.set(car.id, new Auction(car.id));
+                });
+            })
     }
 
     startAuction(auctionId: number): void {
@@ -117,7 +118,7 @@ class Auction {
 
     endAuction(): void {
         this.sendNotificationToClients(0);
-        removeCarByID(this.carId!)
+        carService.removeCarByID(this.carId!)
             .then(() => {
                 clearInterval(this.interval!);
             });
@@ -134,14 +135,14 @@ class Auction {
         });
     }
 
-    sendNotificationToClients(n:number): void {
-        if(n == 0){
+    sendNotificationToClients(n: number): void {
+        if (n == 0) {
             this.clients.forEach(client => {
                 client.ws.send(JSON.stringify({ type: 'finish', valueAcummuled: this.valueAcummuled }));
             });
         }
 
-        if(n == 1){
+        if (n == 1) {
             this.clients.forEach(client => {
                 client.ws.send(JSON.stringify({ type: 'bid', valueAcummuled: this.valueAcummuled }));
             });
@@ -161,34 +162,4 @@ class Auction {
 
 }
 
-const auctionManager = new AuctionManager();
-
-export function handleMessage(ws: WebSocket, message: string) {
-    const parsedMessage = JSON.parse(message);
-
-    if (parsedMessage.type === 'bid') {
-        const { userID, bidOpt, carID } = parsedMessage;
-        if (auctionManager.auctionExists(carID) && !auctionManager.hasStarted(carID)) {
-            auctionManager.startAuction(carID);
-            console.log('Auction started for car ID:', carID);
-        }
-        auctionManager.getAuction(carID)?.addClient(ws, userID, bidOpt, carID);
-        auctionManager.getAuction(carID)?.bidding(userID, bidOpt);
-    }
-
-    if (parsedMessage.type === 'check') {
-        console.log('check', parsedMessage);
-        if (!parsedMessage.userID || !parsedMessage.carID) {
-            return;
-        }
-
-        const { userID, carID } = parsedMessage;
-
-        auctionManager.getAuction(carID)?.addClient(ws, userID, 0, carID);
-        auctionManager.getAuction(carID)?.checkInfo(userID);
-    }
-
-    if (parsedMessage.type === 'comment') {
-        const { userID, comment } = parsedMessage;
-    }
-}
+export const auctionManager = new AuctionManager();
